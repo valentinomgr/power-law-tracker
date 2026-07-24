@@ -155,7 +155,7 @@ export default function App() {
       <footer className="app__footer">
         <p>
           Your data stays in this browser — nothing is sent anywhere. Built as a free tool, open source on{' '}
-          <a href="https://github.com" target="_blank" rel="noreferrer">
+          <a href="https://github.com/valentinomgr/power-law-tracker" target="_blank" rel="noreferrer">
             GitHub
           </a>
           .
