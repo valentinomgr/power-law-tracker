@@ -2,6 +2,8 @@
 
 Stop judging yourself post by post. Track your content in cycles and see the real distribution.
 
+**[Live demo →](https://valentinomgr.github.io/power-law-tracker/)**
+
 ## Why this exists
 
 Most content, client outreach, and business results don't follow a normal distribution — they follow a power law. Most attempts get almost nothing back. Then, once in a while, one carries the rest. That's not a sign you're doing something wrong; it's the expected shape of the game.
@@ -60,7 +62,11 @@ This is a simple heuristic, not a rigorous statistical model. The point is to gi
 
 ## Contributing
 
-Issues and PRs welcome. This is meant to stay small and free — if you'd like to extend it (auto-import from platform APIs, more scoring models, team accounts), feel free to fork it.
+Have an idea, found a bug, or want something added? Open an **[Issue](https://github.com/valentinomgr/power-law-tracker/issues/new)** — that's just a message posted on the repo's Issues tab describing what you'd like to see. No code needed. Click the link, describe the idea in a few sentences, and submit. That's the whole process.
+
+If you know how to code and want to make the change yourself, you can open a **Pull Request** (a PR) instead — fork the repo, make your change, and submit it for review. Either path works; Issues are for "here's an idea," PRs are for "here's the idea, already built."
+
+This is meant to stay small and free. Ideas that would fit well: auto-import from platform APIs, more scoring models, team accounts.
 
 ## License
 
