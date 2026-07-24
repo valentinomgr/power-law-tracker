@@ -158,6 +158,68 @@
   color: var(--accent);
 }
 
+.app__reminder {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--accent-dim);
+  border: 1px solid rgba(255, 75, 62, 0.3);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+}
+
+.app__reminder button {
+  background: var(--accent);
+  color: var(--ink);
+  border: none;
+  border-radius: 7px;
+  padding: 8px 14px;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.app__reminder button:hover {
+  background: #ff6a5e;
+}
+
+.app__section-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.app__backup-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.app__advanced {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.app__advanced summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.app__advanced summary:hover {
+  color: var(--paper);
+}
+
+.app__advanced[open] summary {
+  margin-bottom: 12px;
+}
+
 .app__footer {
   border-top: 1px solid var(--line);
   padding: 24px;

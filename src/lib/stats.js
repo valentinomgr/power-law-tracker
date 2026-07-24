@@ -1,11 +1,28 @@
-// A post's "score" is what we rank/distribute on. Weighted so comments/shares
-// (higher-intent engagement) count for more than passive views.
+// A post's "score" is what we rank/distribute on. Weighted so higher-intent
+// signals (comments, reposts, saves, sends, profile/follower actions) count
+// for more than passive impressions. Mirrors LinkedIn's own analytics fields.
 export function scorePost(post) {
-  const views = Number(post.views) || 0
-  const likes = Number(post.likes) || 0
+  const impressions = Number(post.impressions) || 0
+  const membersReached = Number(post.membersReached) || 0
+  const reactions = Number(post.reactions) || 0
   const comments = Number(post.comments) || 0
-  const shares = Number(post.shares) || 0
-  return views + likes * 5 + comments * 15 + shares * 20
+  const reposts = Number(post.reposts) || 0
+  const saves = Number(post.saves) || 0
+  const sends = Number(post.sends) || 0
+  const profileViews = Number(post.profileViews) || 0
+  const followersGained = Number(post.followersGained) || 0
+
+  return (
+    impressions +
+    membersReached * 0.5 +
+    reactions * 3 +
+    comments * 12 +
+    reposts * 15 +
+    saves * 15 +
+    sends * 15 +
+    profileViews * 10 +
+    followersGained * 40
+  )
 }
 
 export function chunkIntoCycles(posts, cycleSize) {

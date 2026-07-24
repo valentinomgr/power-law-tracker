@@ -1,3 +1,9 @@
+.post-form__toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .post-form__toggle {
   width: 100%;
   padding: 14px;
@@ -14,6 +20,57 @@
 .post-form__toggle:hover {
   border-color: var(--accent);
   background: var(--accent-dim);
+}
+
+.post-form__toggle--secondary {
+  border-style: solid;
+  opacity: 0.8;
+  font-size: 0.85rem;
+  padding: 10px 14px;
+}
+
+.post-form__imported {
+  background: rgba(111, 174, 124, 0.12);
+  border: 1px solid rgba(111, 174, 124, 0.35);
+  color: var(--paper);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.post-form__duplicate {
+  background: rgba(224, 169, 94, 0.12);
+  border: 1px solid rgba(224, 169, 94, 0.4);
+  color: var(--paper);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.post-form__error {
+  background: rgba(255, 75, 62, 0.12);
+  border: 1px solid rgba(255, 75, 62, 0.35);
+  color: var(--paper);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.post-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.post-form__group-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
 }
 
 .post-form {
@@ -33,8 +90,13 @@
 }
 
 .post-form__row--metrics {
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+
+.post-form__row--metrics .post-form__field {
+  flex: 1 1 90px;
+  min-width: 80px;
 }
 
 .post-form__field {

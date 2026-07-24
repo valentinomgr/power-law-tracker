@@ -1,19 +1,41 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import { METRIC_GROUPS, emptyMetrics } from '../lib/metricSchema'
+import { parseLinkedInXlsx } from '../lib/linkedinImport'
 import './PostForm.css'
 
-const empty = {
-  label: '',
-  date: new Date().toISOString().slice(0, 10),
-  views: '',
-  likes: '',
-  comments: '',
-  shares: '',
-  note: '',
+function emptyForm() {
+  return {
+    label: '',
+    date: new Date().toISOString().slice(0, 10),
+    note: '',
+    postUrl: '',
+    ...emptyMetrics(),
+  }
 }
 
-export default function PostForm({ onAdd }) {
-  const [form, setForm] = useState(empty)
+function labelFromPostUrl(url) {
+  if (!url) return null
+  const slug = url.split('/').filter(Boolean).pop()
+  if (!slug) return null
+  // LinkedIn slugs look like:
+  // valentin-pyatenko_most-advice-about-risk-vs-consistency-share-7486397811144589313-VlxG
+  // Strip the "-share-<id>-<code>" suffix and any author-name prefix before
+  // the first underscore, then turn dashes into spaces and title-case it.
+  const withoutSuffix = slug.replace(/-share-\d+-[A-Za-z0-9]+$/, '')
+  const afterAuthor = withoutSuffix.includes('_') ? withoutSuffix.split('_').slice(1).join('_') : withoutSuffix
+  const words = afterAuthor.split(/[-_]+/).filter(Boolean)
+  if (words.length === 0) return null
+  const text = words.join(' ')
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+export default function PostForm({ onAdd, existingPosts = [] }) {
+  const [form, setForm] = useState(emptyForm)
   const [open, setOpen] = useState(false)
+  const [importError, setImportError] = useState('')
+  const [importedFrom, setImportedFrom] = useState('')
+  const [duplicateOf, setDuplicateOf] = useState(null)
+  const fileInputRef = useRef(null)
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }))
@@ -21,30 +43,99 @@ export default function PostForm({ onAdd }) {
 
   function handleSubmit(e) {
     e.preventDefault()
-    onAdd({
-      id: crypto.randomUUID(),
-      label: form.label.trim() || 'Untitled post',
-      date: form.date,
-      views: Number(form.views) || 0,
-      likes: Number(form.likes) || 0,
-      comments: Number(form.comments) || 0,
-      shares: Number(form.shares) || 0,
-      note: form.note.trim(),
-    })
-    setForm(empty)
+    const metrics = {}
+    METRIC_GROUPS.forEach((g) =>
+      g.fields.forEach((f) => {
+        metrics[f.key] = Number(form[f.key]) || 0
+      })
+    )
+    onAdd(
+      {
+        id: duplicateOf ? duplicateOf.id : crypto.randomUUID(),
+        label: form.label.trim() || 'Untitled post',
+        date: form.date,
+        note: form.note.trim(),
+        postUrl: form.postUrl || null,
+        measuredAt: new Date().toISOString(),
+        ...metrics,
+      },
+      duplicateOf
+    )
+    setForm(emptyForm())
+    setImportedFrom('')
+    setDuplicateOf(null)
     setOpen(false)
+  }
+
+  async function handleFileChange(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setImportError('')
+    setDuplicateOf(null)
+    try {
+      const parsed = await parseLinkedInXlsx(file)
+      setForm((f) => ({
+        ...f,
+        label: f.label || labelFromPostUrl(parsed.postUrl) || 'Imported post',
+        date: parsed.date || f.date,
+        postUrl: parsed.postUrl || f.postUrl,
+        ...parsed.metrics,
+      }))
+      setImportedFrom(file.name)
+
+      if (parsed.postUrl) {
+        const existing = existingPosts.find((p) => p.postUrl === parsed.postUrl)
+        if (existing) {
+          setDuplicateOf(existing)
+        }
+      }
+
+      setOpen(true)
+    } catch (err) {
+      setImportError(err.message || 'Could not read that file. Make sure it\'s a LinkedIn "Post analytics" export.')
+    } finally {
+      e.target.value = ''
+    }
   }
 
   if (!open) {
     return (
-      <button className="post-form__toggle" onClick={() => setOpen(true)}>
-        + Log a post
-      </button>
+      <div className="post-form__toggles">
+        <button className="post-form__toggle" onClick={() => setOpen(true)}>
+          + Log a post
+        </button>
+        <button className="post-form__toggle post-form__toggle--secondary" onClick={() => fileInputRef.current?.click()}>
+          Import from LinkedIn .xlsx
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".xlsx"
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+        />
+        {importError && <div className="post-form__error">{importError}</div>}
+      </div>
     )
   }
 
   return (
     <form className="post-form" onSubmit={handleSubmit}>
+      {importedFrom && !duplicateOf && (
+        <div className="post-form__imported">
+          Filled in from <strong>{importedFrom}</strong> — check the numbers below, then add.
+        </div>
+      )}
+      {duplicateOf && (
+        <div className="post-form__duplicate">
+          This looks like the same post as <strong>{duplicateOf.label}</strong>, logged{' '}
+          {new Date(duplicateOf.measuredAt || duplicateOf.date).toLocaleDateString()} with{' '}
+          {duplicateOf.impressions ?? 0} impressions. Submitting will update it to a new snapshot with today's
+          numbers and keep the earlier reading in its history — it won't count as a second post.
+        </div>
+      )}
+      {importError && <div className="post-form__error">{importError}</div>}
+
       <div className="post-form__row">
         <label className="post-form__field post-form__field--wide">
           <span>What was it</span>
@@ -62,24 +153,26 @@ export default function PostForm({ onAdd }) {
         </label>
       </div>
 
-      <div className="post-form__row post-form__row--metrics">
-        <label className="post-form__field">
-          <span>Views</span>
-          <input type="number" inputMode="numeric" min="0" placeholder="0" value={form.views} onChange={(e) => update('views', e.target.value)} />
-        </label>
-        <label className="post-form__field">
-          <span>Likes</span>
-          <input type="number" inputMode="numeric" min="0" placeholder="0" value={form.likes} onChange={(e) => update('likes', e.target.value)} />
-        </label>
-        <label className="post-form__field">
-          <span>Comments</span>
-          <input type="number" inputMode="numeric" min="0" placeholder="0" value={form.comments} onChange={(e) => update('comments', e.target.value)} />
-        </label>
-        <label className="post-form__field">
-          <span>Shares</span>
-          <input type="number" inputMode="numeric" min="0" placeholder="0" value={form.shares} onChange={(e) => update('shares', e.target.value)} />
-        </label>
-      </div>
+      {METRIC_GROUPS.map((group) => (
+        <div className="post-form__group" key={group.group}>
+          <span className="post-form__group-label">{group.group}</span>
+          <div className="post-form__row post-form__row--metrics">
+            {group.fields.map((f) => (
+              <label className="post-form__field" key={f.key} title={f.help}>
+                <span>{f.label}</span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min="0"
+                  placeholder="0"
+                  value={form[f.key]}
+                  onChange={(e) => update(f.key, e.target.value)}
+                />
+              </label>
+            ))}
+          </div>
+        </div>
+      ))}
 
       <label className="post-form__field post-form__field--wide">
         <span>Note (optional)</span>
@@ -92,11 +185,21 @@ export default function PostForm({ onAdd }) {
       </label>
 
       <div className="post-form__actions">
-        <button type="button" className="post-form__cancel" onClick={() => { setOpen(false); setForm(empty) }}>
+        <button
+          type="button"
+          className="post-form__cancel"
+          onClick={() => {
+            setOpen(false)
+            setForm(emptyForm())
+            setImportedFrom('')
+            setImportError('')
+            setDuplicateOf(null)
+          }}
+        >
           Cancel
         </button>
         <button type="submit" className="post-form__submit">
-          Add post
+          {duplicateOf ? 'Update with new snapshot' : 'Add post'}
         </button>
       </div>
     </form>

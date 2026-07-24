@@ -2,7 +2,7 @@
 
 Stop judging yourself post by post. Track your content in cycles and see the real distribution.
 
-**[Live demo →](https://valentinomgr.github.io/power-law-tracker/)**
+**[Live demo →](https://valentinomgr.github.io/power-law-tracker/)** · **[Full usage guide →](./USAGE.md)**
 
 ## Why this exists
 
@@ -14,14 +14,15 @@ Power Law Tracker fixes that. Log your posts, group them into cycles, and see th
 
 ## Features
 
-- **Log posts manually** — views, likes, comments, shares, and a note
+- **Log posts manually, or import directly from LinkedIn** — one click imports a post's `.xlsx` analytics export (Impressions, Members reached, Reactions, Comments, Reposts, Saves, Sends, Profile views, Followers gained) instead of typing nine numbers by hand
+- **Re-measuring a post doesn't create a duplicate** — re-importing the same post later (e.g. a week vs. a month after posting) is detected by post URL and merged as a new snapshot, with the earlier reading kept in history
 - **Cycle-based grouping** — define a cycle size (default 12 posts) and see stats per cycle, not per post
 - **Distribution visualization** — a signature "skyline" strip showing every post's relative performance, with outlier posts highlighted
 - **Outlier detection** — automatically flags posts that are meaningfully carrying a cycle's results
 - **Data-driven recommendations** — plain-language guidance based on how many cycles you've completed and how skewed your results are
 - **Cycle history** — compare past completed cycles side by side
-- **Export** — download your data as CSV or JSON at any time
-- **Local-only storage** — everything lives in your browser's local storage. Nothing is sent to any server.
+- **Backup & restore** — export/import a JSON backup any time, with a reminder if it's been a while; optional advanced sync to your own Google Sheet
+- **Local-first storage** — your data lives in this browser (IndexedDB). Nothing is sent to any server unless you opt into the Google Sheets backup, and even then it goes straight to a sheet you own.
 
 ## Running locally
 
@@ -51,12 +52,12 @@ npm run build
 ## Tech stack
 
 - React 19 + Vite
-- No backend, no database — `localStorage` only
+- No backend, no database of ours — data lives in IndexedDB (with a localStorage fallback) in your browser; the optional Google Sheets backup talks directly to a sheet you own
 - No external analytics or tracking
 
 ## How scoring works
 
-Each post gets a weighted score: `views + likes×5 + comments×15 + shares×20`. Higher-intent engagement (comments, shares) counts more than passive views, since it's a better signal of real resonance. A post is flagged as an outlier when it scores well above the cycle's median or mean — the mechanism a power law relies on.
+Each post gets a weighted score across all nine LinkedIn metrics, with higher-intent signals counted for more than passive ones — comments, reposts, saves, and sends outweigh raw impressions, and profile views / followers gained (a post converting a stranger into a follower) outweigh both. A post is flagged as an outlier when it scores well above the cycle's median or mean — the mechanism a power law relies on. See [`src/lib/stats.js`](./src/lib/stats.js) for the exact weights.
 
 This is a simple heuristic, not a rigorous statistical model. The point is to give you a fast, intuitive read — not a research-grade analysis.
 

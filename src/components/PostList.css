@@ -46,6 +46,11 @@
   border-radius: 20px;
 }
 
+.plist__badge--muted {
+  background: rgba(247, 244, 236, 0.1);
+  color: var(--muted);
+}
+
 .plist__date {
   font-size: 0.78rem;
   color: var(--muted);
@@ -58,6 +63,11 @@
   flex-wrap: wrap;
   font-size: 0.8rem;
   color: var(--muted);
+}
+
+.plist__metric--highlight {
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .plist__note {
