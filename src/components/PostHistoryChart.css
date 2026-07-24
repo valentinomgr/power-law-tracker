@@ -1,0 +1,83 @@
+.phist {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.phist__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.phist__title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.phist__growth {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.phist__growth--up {
+  color: var(--good);
+}
+
+.phist__growth--down {
+  color: var(--muted);
+}
+
+.phist__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.phist__line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.phist__dot {
+  fill: var(--ink-soft);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.phist__dot--last {
+  fill: var(--accent);
+}
+
+.phist__readings {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.phist__reading {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+
+.phist__reading-date {
+  font-weight: 600;
+  color: rgba(247, 244, 236, 0.75);
+  flex-shrink: 0;
+}

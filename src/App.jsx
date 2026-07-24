@@ -119,6 +119,10 @@ export default function App() {
     setPosts((prev) => prev.filter((p) => p.id !== id))
   }
 
+  function handleEditPost(updated) {
+    setPosts((prev) => prev.map((p) => (p.id === updated.id ? { ...p, ...updated } : p)))
+  }
+
   function handleClearAll() {
     if (posts.length === 0) return
     const ok = window.confirm('Delete all logged posts? This cannot be undone.')
@@ -299,7 +303,7 @@ export default function App() {
                 </button>
               </div>
             </div>
-            <PostList posts={currentCycle} hits={currentSummary.hits} onDelete={handleDelete} />
+            <PostList posts={currentCycle} hits={currentSummary.hits} onDelete={handleDelete} onEdit={handleEditPost} />
           </section>
         )}
 

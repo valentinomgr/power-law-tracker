@@ -9,7 +9,7 @@
   background: var(--ink-soft);
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 12px 40px 12px 14px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -51,6 +51,17 @@
   color: var(--muted);
 }
 
+.plist__badge--button {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.plist__badge--button:hover {
+  background: rgba(247, 244, 236, 0.18);
+  color: var(--paper);
+}
+
 .plist__date {
   font-size: 0.78rem;
   color: var(--muted);
@@ -76,14 +87,35 @@
   font-style: italic;
 }
 
-.plist__delete {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 24px;
-  height: 24px;
+.plist__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.plist__edit {
+  padding: 5px 12px;
   border-radius: 6px;
-  border: none;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.plist__edit:hover {
+  border-color: var(--paper);
+  color: var(--paper);
+}
+
+.plist__delete {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
   background: transparent;
   color: var(--muted);
   font-size: 1.1rem;
@@ -93,5 +125,6 @@
 
 .plist__delete:hover {
   background: rgba(255, 75, 62, 0.15);
+  border-color: rgba(255, 75, 62, 0.4);
   color: var(--accent);
 }

@@ -216,7 +216,7 @@ Your posts could be lost, which is exactly what the Backup & restore section exi
 If you clicked "Update with new snapshot" and confirmed, the old reading is safely kept in that post's history, not deleted — you haven't lost anything.
 
 **Can I edit a post's numbers after adding it?**
-Not directly yet — for now, delete the post and re-add it (or re-import its `.xlsx`) with corrected numbers.
+Yes — click **Edit** next to the delete button on any post. This opens the same fields you used to add it; save to update, or cancel to leave it as-is. Editing doesn't affect a post's snapshot history or its duplicate-detection link to its LinkedIn URL.
 
 **What counts as an "outlier" post?**
 A post scoring well above the cycle's median or mean, using a weighted score across all nine metrics (comments, reposts, saves, sends, and follower/profile actions count for more than passive impressions, since they're stronger signals of real resonance).
