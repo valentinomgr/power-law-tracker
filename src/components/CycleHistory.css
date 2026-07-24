@@ -1,0 +1,42 @@
+.chist {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.chist__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.chist__list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.chist__cycle {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chist__cycle-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chist__cycle-number {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.chist__cycle-stat {
+  font-size: 0.78rem;
+  color: var(--muted);
+}

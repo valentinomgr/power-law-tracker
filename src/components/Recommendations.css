@@ -1,0 +1,27 @@
+.recs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recs__item {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border-left: 3px solid var(--muted);
+  background: var(--ink-soft);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(247, 244, 236, 0.88);
+}
+
+.recs__item--good {
+  border-left-color: var(--good);
+}
+
+.recs__item--warn {
+  border-left-color: var(--warn);
+}
+
+.recs__item--neutral {
+  border-left-color: var(--muted);
+}

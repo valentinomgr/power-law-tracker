@@ -1,0 +1,67 @@
+# Power Law Tracker
+
+Stop judging yourself post by post. Track your content in cycles and see the real distribution.
+
+## Why this exists
+
+Most content, client outreach, and business results don't follow a normal distribution — they follow a power law. Most attempts get almost nothing back. Then, once in a while, one carries the rest. That's not a sign you're doing something wrong; it's the expected shape of the game.
+
+The problem is that most people judge each post, pitch, or attempt in isolation — "this one flopped, I must be bad at this" — instead of looking at the pattern across a full cycle of attempts.
+
+Power Law Tracker fixes that. Log your posts, group them into cycles, and see the actual shape of your results — including which post is quietly carrying the whole cycle.
+
+## Features
+
+- **Log posts manually** — views, likes, comments, shares, and a note
+- **Cycle-based grouping** — define a cycle size (default 12 posts) and see stats per cycle, not per post
+- **Distribution visualization** — a signature "skyline" strip showing every post's relative performance, with outlier posts highlighted
+- **Outlier detection** — automatically flags posts that are meaningfully carrying a cycle's results
+- **Data-driven recommendations** — plain-language guidance based on how many cycles you've completed and how skewed your results are
+- **Cycle history** — compare past completed cycles side by side
+- **Export** — download your data as CSV or JSON at any time
+- **Local-only storage** — everything lives in your browser's local storage. Nothing is sent to any server.
+
+## Running locally
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the printed local URL in your browser.
+
+## Building for production
+
+```bash
+npm run build
+```
+
+Output is written to `dist/`. This is a static site — deploy it anywhere that serves static files (GitHub Pages, Vercel, Netlify, Cloudflare Pages, etc.).
+
+### Deploying to GitHub Pages
+
+```bash
+npm run build
+# push the contents of dist/ to a gh-pages branch, or use an action like
+# peaceiris/actions-gh-pages in your CI workflow
+```
+
+## Tech stack
+
+- React 19 + Vite
+- No backend, no database — `localStorage` only
+- No external analytics or tracking
+
+## How scoring works
+
+Each post gets a weighted score: `views + likes×5 + comments×15 + shares×20`. Higher-intent engagement (comments, shares) counts more than passive views, since it's a better signal of real resonance. A post is flagged as an outlier when it scores well above the cycle's median or mean — the mechanism a power law relies on.
+
+This is a simple heuristic, not a rigorous statistical model. The point is to give you a fast, intuitive read — not a research-grade analysis.
+
+## Contributing
+
+Issues and PRs welcome. This is meant to stay small and free — if you'd like to extend it (auto-import from platform APIs, more scoring models, team accounts), feel free to fork it.
+
+## License
+
+MIT — see [LICENSE](./LICENSE).

@@ -1,0 +1,105 @@
+.post-form__toggle {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px dashed var(--line);
+  background: transparent;
+  color: var(--paper);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.post-form__toggle:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.post-form {
+  background: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.post-form__row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.post-form__row--metrics {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.post-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 110px;
+  min-width: 90px;
+}
+
+.post-form__field--wide {
+  flex: 1 1 100%;
+}
+
+.post-form__field span {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.post-form__field input {
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 9px 10px;
+  color: var(--paper);
+  font-size: 0.92rem;
+}
+
+.post-form__field input:focus {
+  border-color: var(--accent);
+}
+
+.post-form__field input[type='date'] {
+  color-scheme: dark;
+}
+
+.post-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.post-form__cancel,
+.post-form__submit {
+  padding: 10px 16px;
+  border-radius: 7px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.post-form__cancel {
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--line);
+}
+
+.post-form__submit {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+.post-form__submit:hover {
+  background: #ff6a5e;
+}
